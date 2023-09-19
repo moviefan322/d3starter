@@ -29,7 +29,6 @@ g.append("text")
   .attr("font-size", "20px")
   .attr("text-anchor", "middle")
   .attr("transform", "rotate(-90)")
-  .text("Height (m)");
 
 d3.json("data/buildings.json").then((data) => {
   data.forEach((d) => {
@@ -50,7 +49,7 @@ d3.json("data/buildings.json").then((data) => {
     .paddingInner(0.3)
     .paddingOuter(0.2);
 
-  const y = d3.scaleLinear().domain([0, max]).range([0, HEIGHT]);
+  const y = d3.scaleLinear().domain([0, max]).range([HEIGHT, 0]);
 
   const xAxisCall = d3.axisBottom(x);
   g.append("g")
@@ -88,9 +87,9 @@ d3.json("data/buildings.json").then((data) => {
     .enter()
     .append("rect")
     .attr("x", (d) => x(d.name))
-    .attr("y", 0)
+    .attr("y", (d) => y(d.height))
     .attr("width", x.bandwidth)
-    .attr("height", (d) => y(d.height))
+    .attr("height", (d) => HEIGHT - y(d.height))
     .attr("fill", (d, i) => color(d.name));
 });
 
